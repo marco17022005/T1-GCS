@@ -1,12 +1,15 @@
+import java.util.ArrayList;
+
 public class Usuario {
     private String nome;
     private int id;
-    
+    private ArrayList<Pedido> pedidos;
 
     // Construtor
     public Usuario(String nome, int id) {
         this.nome = nome;
         this.id = id;
+        pedidos = new ArrayList<>();
     }
 
     // Getters e Setters
@@ -26,7 +29,10 @@ public class Usuario {
         this.id = id;
     }
 
-    // Método toString para exibir informações do usuário
+    public ArrayList<Pedido> getPedidos(){
+        return pedidos;
+    }
+    
     @Override
     public String toString() {
         return "Usuário: " + nome + " id (" + id + ")";

@@ -32,12 +32,12 @@ public class Pedido {
     }
 
     public void setStatus(Usuario administrador, Status status, String data){
-        if(administrador instanceof Usuario) {
+        if(administrador instanceof Administrador) {
             if(status == Status.APROVADO){
                 this.dataDeConclusao = data;
             }
             this.status = status;
-        }//APÓS a implementação da classe administrador, mudar para instanceof Administrador
+        }
     }
 
     public void mostrarItensDoPedido(){
