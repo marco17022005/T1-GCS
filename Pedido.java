@@ -5,7 +5,8 @@ public class Pedido {
     private String data;
     private String dataDeConclusao;
     private Status status;
-    private ArrayList<Item> itens; 
+    private ArrayList<Item> itens;
+    private double valorTotal;
 
     public Pedido(Usuario funcionario, Departamento departamento, String data){
         this.funcionario = funcionario;
@@ -13,6 +14,7 @@ public class Pedido {
         this.data = data;
         status = Status.ABERTO;
         itens = new ArrayList<>();
+        setValorTotal();
     }
 
     public Usuario getFuncionario() {
@@ -31,18 +33,33 @@ public class Pedido {
         return status;
     }
 
-    public void setStatus(Usuario administrador, Status status, String data){
+    public boolean setStatus(Usuario administrador, Status status, String data){
+        if(this.getStatus() == Status.APROVADO || this.getStatus() == Status.REPROVADO || this.getStatus() == Status.CONCLUIDO){
+            return false;
+        }
         if(administrador instanceof Administrador) {
             if(status == Status.APROVADO){
                 this.dataDeConclusao = data;
+                this.status = status;
             }
-            this.status = status;
         }
+        return true;
     }
 
     public void mostrarItensDoPedido(){
         for(Item i : itens){
-            System.out.println(i.getDescricao());
+            System.out.println(i.getDescricao() + "," + i.getValor() + "," + i.getQuantidade() + "," + i.getValorTotal());
         }
     }
+
+    public void setValorTotal(){
+        for(Item i : itens){
+            valorTotal += i.getValorTotal();
+        }
+    }
+
+    public double getValorTotal(){
+        return valorTotal;
+    }
+
 }

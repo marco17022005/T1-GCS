@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Usuario {
     private String nome;
     private int id;
+    private Departamento departamento;
     private ArrayList<Pedido> pedidos;
 
     // Construtor
@@ -31,6 +32,19 @@ public class Usuario {
 
     public ArrayList<Pedido> getPedidos(){
         return pedidos;
+    }
+
+    public void cadastrarPedido(Pedido p){
+        pedidos.add(p); //Cadastrar o pedido como feito do usuário
+    }
+
+    public void setDepartamento(Departamento d){
+        this.departamento = d;
+        //Um usuário também precisa de departamento, "O departamento solicitante (**deve ser o mesmo do funcionário no momento do cadastro**)"
+    }
+    
+    public Departamento getDepartamento() {
+        return departamento;
     }
     
     @Override
