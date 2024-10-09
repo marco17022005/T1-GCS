@@ -1,6 +1,7 @@
 //Ideia: Classe catálogo de pedido e usuario, para a criação, remoção e visualização de pedidos;
 import java.util.ArrayList;
-public class Catalogo {
+
+public class Catalogo{
     private ArrayList<Pedido> pedidos;
     private ArrayList<Usuario> usuarios;
 
@@ -24,6 +25,15 @@ public class Catalogo {
 
     public void consultarListaDeItens(Pedido p){
         p.mostrarItensDoPedido();
+    }
+
+    public boolean deletarPedido(Pedido p, Usuario u){
+        if(u.compare(u, p.getFuncionario()) != 0){
+            return false;
+        }
+
+        pedidos.remove(p);
+        return true;
     }
 
     

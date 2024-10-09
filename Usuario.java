@@ -1,6 +1,7 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 
-public class Usuario {
+public class Usuario implements Comparator{
     private String nome;
     private int id;
     private Departamento departamento;
@@ -50,5 +51,19 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuário: " + nome + " id (" + id + ")";
+    }
+
+    @Override
+    public int compare(Object o1, Object o2) {
+        Usuario usuario1, usuario2;
+        
+        usuario1 = (Usuario) o1;
+        usuario2 = (Usuario) o2;
+
+        if (usuario1.getId() < usuario2.getId())
+            return -1;
+        else if(usuario1.getId() > usuario2.getId())
+            return +1;
+        return 0;
     }
 }
