@@ -1,19 +1,18 @@
 public enum Status {
-    ABERTO("Aberto"), APROVADO("Aprovado"), REPROVADO("Reprovado"), CONCLUIDO("Concluído");
+    ABERTO("Aberto"), APROVADO("Aprovado"), REPROVADO("Reprovado");
 
-    private final String status; 
-    private Status(String status){
-        this.status = status;
+    private final String descricao; 
+
+    Status(String descricao) {
+        this.descricao = descricao;
     }
 
-    public String getStatus(){
-        return this.status;
+    public String getDescricao() {
+        return descricao;
     }
 
     @Override
     public String toString() {
-        String texto = "";
-        texto += "" + status;
-        return texto;        
+        return descricao;        
     }
 }
