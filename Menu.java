@@ -1,168 +1,219 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
     private Catalogo catalogo;
     private Scanner scanner = new Scanner(System.in);
     private Usuario usuarioAtual;
-    public Menu(){
+
+    public Menu() {
         catalogo = new Catalogo();
         executar();
     }
 
-    public void executar(){
+    public void executar() {
         inicializarObjetos();
         menuInicial();
     }
 
-    /*Menu Inicial: Funciona como "login", apenas irá mostrar os usuários disponíveis
-    e "logar" como o usuario escolhido no menu principal */
-    public void menuInicial(){
-        System.out.println("Digite o usuario atual pelo seu número:   1 - 15");
+    public void menuInicial() {
+        System.out.println("Digite o usuário atual pelo seu número:   1 - 15");
         mostrarFuncionarios();
-        usuarioAtual = catalogo.retornaUsuario(retornarValorScanner());
+        usuarioAtual = catalogo.retornaUsuario(validarUsuarioEscolhido());
         menuPrincipal();
     }
 
-    public void menuPrincipal(){
-        System.out.println("Usuario atual: " + usuarioAtual.getNome());
+    public void menuPrincipal() {
+        System.out.println("Usuário atual: " + usuarioAtual.getNome());
 
-        System.out.println("Digite a opção desejada: ");
-        System.out.println("1- Registrar pedido de aquisição");
-        System.out.println("2- Deletar pedido em aberto");
-        System.out.println("3- Trocar usuário");
-        if(usuarioAtual instanceof Administrador){
-            System.out.println("4- Analisar estatísticas gerais");
-            System.out.println("5- Visualizar pedidos em aberto");
-        }
-
-        switch (retornarValorScanner()) {
-            case 1-> {
-                registrarPedido();
-            } 
-            case 2 -> {
-                deletarPedido();
-            } case 3 -> {
-                menuInicial();
-            } case 4 -> {
-
-            } case 5 -> {
-                administrarPedidos();
+        while (true) {
+            System.out.println("Digite a opção desejada: ");
+            System.out.println("1- Registrar pedido de aquisição");
+            System.out.println("2- Deletar pedido em aberto");
+            System.out.println("3- Trocar usuário");
+            
+            if (usuarioAtual instanceof Administrador) {
+                System.out.println("4- Analisar estatísticas gerais");
+                System.out.println("5- Visualizar pedidos em aberto");
             }
-            default -> {
-                System.out.println("Opção inválida.");
-                menuPrincipal();
+
+            switch (validarOpcaoMenu()) {
+                case 1 -> registrarPedido();
+                case 2 -> deletarPedido();
+                case 3 -> menuInicial();
+                case 4 -> analisarEstatisticas();
+                case 5 -> administrarPedidos();
+                default -> System.out.println("Opção inválida.");
             }
         }
-
     }
 
-    public void registrarPedido(){
+    public void registrarPedido() {
         Item item = null;
         System.out.println("Digite a data atual: ");
         String data = scanner.nextLine();
         Pedido p = new Pedido(usuarioAtual, usuarioAtual.getDepartamento(), data);
         p.setStatus(Status.ABERTO);
-        System.out.println("Deseja adicionar 1 item ao pedido? ");
-        System.out.println("1- Sim     | 2- Não");
-        while(retornarValorScanner() == 1){
+
+        while (true) {
+            System.out.println("Deseja adicionar 1 item ao pedido? ");
+            System.out.println("1- Sim     | 2- Não");
+            if (validarOpcaoMenu() == 2) break;
+
             System.out.println("Digite a descrição do item: ");
             String descricao = scanner.nextLine();
+
             System.out.println("Digite o valor unitário: ");
-            double valorUnitario = scanner.nextDouble();
+            double valorUnitario = validarValor();
+
             System.out.println("Digite a quantidade desejada: ");
-            int quantidade = scanner.nextInt();
-            scanner.nextLine();
+            int quantidade = validarQuantidade();
+
             item = new Item(descricao, valorUnitario);
             item.setValorTotal(valorUnitario, quantidade);
             p.cadastrarItemNoPedido(item);
-
-            System.out.println("Deseja adicionar mais 1 item ao pedido? ");
-            System.out.println("1- Sim     | 2- Não");
-            retornarValorScanner();
         }
         catalogo.registrarPedido(p, usuarioAtual);
-        menuPrincipal();
+        System.out.println("Pedido registrado com sucesso!");
     }   
 
-    public void deletarPedido(){
+    public void deletarPedido() {
         System.out.println("Digite o pedido que deseja deletar: ");
         mostrarPedidos();
-        if(!catalogo.deletarPedido(catalogo.retornaPedido(retornarValorScanner()), usuarioAtual)){
-            System.out.println("O usuário atual não possui permissão de deletar o pedido informado.\nPermissão delegada ao usuário " + catalogo.retornaPedido(retornarValorScanner()).getFuncionario());
-            menuPrincipal();
+        int pedidoId = validarPedidoEscolhido();
+
+        if (!catalogo.deletarPedido(catalogo.retornaPedido(pedidoId), usuarioAtual)) {
+            System.out.println("O usuário atual não possui permissão para deletar o pedido informado.");
         } else {
-            System.out.println("Pedido deletado.");
+            System.out.println("Pedido deletado com sucesso.");
         }
-        menuPrincipal();
     }
 
-    public void mostrarFuncionarios(){
+    public void mostrarFuncionarios() {
         catalogo.imprimeFuncionarios();
     }
 
-    public void mostrarPedidos(){
+    public void mostrarPedidos() {
         catalogo.imprimePedidos();
     }
 
-    public int retornarValorScanner(){
-        int resposta = scanner.nextInt();
-        scanner.nextLine();
-        return resposta;
-    }
-
-    public void administrarPedidos(){
-        System.out.println("1- Voltar ao menu");
-        System.out.println("2- Avaliar pedido em aberto");
-        
-        switch (retornarValorScanner()) {
-            case 1 -> {
-                menuPrincipal();
-            } case 2 -> {
-                System.out.println("------------------------");
-                System.out.println("Pedidos em aberto: ");
-                System.out.println("Digite o número do pedido para atualizar o status.");
-                catalogo.imprimePedidosEmAberto();
-                int resposta = retornarValorScanner(); //Vai guardar o pedido escolhido
-                System.out.println("Deseja: \n 1- Aprovar  | 2- Rejeitar");
-                retornarValorScanner();
+    public int validarOpcaoMenu() {
+        while (true) {
+            try {
+                System.out.print("Escolha uma opção: ");
+                int resposta = scanner.nextInt();
                 scanner.nextLine();
-                System.out.println("Digite a data:");
-                String data = scanner.nextLine();
-                if(resposta == 1){
-                    catalogo.retornaPedido(resposta).setStatus(usuarioAtual, Status.APROVADO, data);
-                    System.out.println("Status do pedido " + catalogo.retornaPedido(resposta) + " atualizado para " + catalogo.retornaPedido(resposta).getStatus());
-                } else if (resposta == 2){
-                    catalogo.retornaPedido(resposta).setStatus(usuarioAtual, Status.REPROVADO, data);
-                    System.out.println("Status do pedido " + catalogo.retornaPedido(resposta) + " atualizado para " + catalogo.retornaPedido(resposta).getStatus());
-                }
-                administrarPedidos();
-            }
-        
-            default -> {
-                System.out.println("Opção inválida.");
-                menuPrincipal();
+                return resposta;
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, insira um número.");
+                scanner.nextLine();
             }
         }
-    
     }
 
+    public int validarUsuarioEscolhido() {
+        while (true) {
+            int usuarioEscolhido = validarOpcaoMenu();
+            if (usuarioEscolhido >= 1 && usuarioEscolhido <= 15) {
+                return usuarioEscolhido;
+            } else {
+                System.out.println("Número de usuário inválido. Por favor, escolha um número entre 1 e 15.");
+            }
+        }
+    }
 
+    public int validarPedidoEscolhido() {
+        while (true) {
+            int pedidoEscolhido = validarOpcaoMenu();
+            if (catalogo.existePedido(pedidoEscolhido)) {
+                return pedidoEscolhido;
+            } else {
+                System.out.println("Número de pedido inválido. Por favor, escolha um pedido existente.");
+            }
+        }
+    }
 
+    public double validarValor() {
+        while (true) {
+            try {
+                double valor = scanner.nextDouble();
+                scanner.nextLine();
+                if (valor < 0) {
+                    throw new InputMismatchException();
+                }
+                return valor;
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, insira um valor válido.");
+                scanner.nextLine();
+            }
+        }
+    }
 
+    public int validarQuantidade() {
+        while (true) {
+            try {
+                int quantidade = scanner.nextInt();
+                scanner.nextLine();
+                if (quantidade <= 0) {
+                    throw new InputMismatchException();
+                }
+                return quantidade;
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, insira uma quantidade válida.");
+                scanner.nextLine();
+            }
+        }
+    }
 
+    public void analisarEstatisticas() {
+        System.out.println("Analisando estatísticas gerais...");
+        System.out.println("Total de pedidos: " + catalogo.contarPedidos());
+        System.out.println("Total de pedidos abertos: " + catalogo.contarPedidosPorStatus(Status.ABERTO));
+    }
 
+    public void administrarPedidos() {
+        while (true) {
+            System.out.println("1- Voltar ao menu");
+            System.out.println("2- Avaliar pedido em aberto");
 
+            switch (validarOpcaoMenu()) {
+                case 1 -> {
+                    return;
+                }
+                case 2 -> {
+                    System.out.println("------------------------");
+                    System.out.println("Pedidos em aberto: ");
+                    catalogo.imprimePedidosEmAberto();
+                    int resposta = validarPedidoEscolhido();
+                    System.out.println("Deseja: \n 1- Aprovar  | 2- Rejeitar");
+                    int acao = validarOpcaoMenu();
+                    scanner.nextLine();
 
+                    System.out.println("Digite a data:");
+                    String data = scanner.nextLine();
 
-    public void inicializarObjetos(){
-        //Criando Departamentos
+                    if (acao == 1) {
+                        catalogo.retornaPedido(resposta).setStatus(usuarioAtual, Status.APROVADO, data);
+                        System.out.println("Status do pedido " + catalogo.retornaPedido(resposta) + " atualizado para " + catalogo.retornaPedido(resposta).getStatus());
+                    } else if (acao == 2) {
+                        catalogo.retornaPedido(resposta).setStatus(usuarioAtual, Status.REPROVADO, data);
+                        System.out.println("Status do pedido " + catalogo.retornaPedido(resposta) + " atualizado para " + catalogo.retornaPedido(resposta).getStatus());
+                    }
+                }
+                default -> {
+                    System.out.println("Opção inválida.");
+                }
+            }
+        }
+    }
+
+    public void inicializarObjetos() {
         Departamento d1 = new Departamento("Financeiro", 100000);
         Departamento d2 = new Departamento("RH", 100000);
         Departamento d3 = new Departamento("Manutenção", 100000);    
         Departamento d4 = new Departamento("Engenharia", 100000);
         Departamento d5 = new Departamento("Logística", 100000);
 
-        //Criando Usuários, dividos entre administradores e funciuonários
         Usuario usuario1 = new Administrador("Ana Costa", 11111);
         Usuario usuario2 = new Funcionario("Lucas Almeida", 22222);
         Usuario usuario3 = new Administrador("Mariana Silva", 33333);
@@ -178,9 +229,7 @@ public class Menu {
         Usuario usuario13 = new Administrador("Isabela Ferreira", 00400);
         Usuario usuario14 = new Funcionario("Gustavo Ribeiro", 00500);
         Usuario usuario15 = new Administrador("Camila Souza", 00600);
-        
-        
-        //Cadastrando os usuários
+
         catalogo.cadastrarUsuario(usuario1);
         catalogo.cadastrarUsuario(usuario2);
         catalogo.cadastrarUsuario(usuario3);
@@ -197,9 +246,6 @@ public class Menu {
         catalogo.cadastrarUsuario(usuario14);
         catalogo.cadastrarUsuario(usuario15);
 
-        //Relacionando Usuários e Departamentos
-        //d1- financeiro | d2 - RH | d3 - manutenção | d4 - engenharia | d5 - logística
-        
         usuario1.setDepartamento(d1);
         usuario2.setDepartamento(d2);
         usuario3.setDepartamento(d3);
