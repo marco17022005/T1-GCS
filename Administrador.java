@@ -23,6 +23,6 @@ public class Administrador extends Usuario{
     }
 
     public void manipularStatusPedido(Pedido pedido){
-
+        
     }
 }

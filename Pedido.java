@@ -33,23 +33,34 @@ public class Pedido {
         return status;
     }
 
-    public boolean setStatus(Usuario administrador, Status status, String data){
+    public boolean setStatus(Usuario administrador, Status s, String data){
         if(this.getStatus() == Status.APROVADO || this.getStatus() == Status.REPROVADO || this.getStatus() == Status.CONCLUIDO){
             return false;
         }
         if(administrador instanceof Administrador) {
-            if(status == Status.APROVADO){
+            if(s == Status.APROVADO){
                 this.dataDeConclusao = data;
-                this.status = status;
+                this.status = s;
             }
         }
         return true;
     }
 
+    public boolean setStatus(Status s){
+        if(this.getStatus() == Status.APROVADO || this.getStatus() == Status.REPROVADO || this.getStatus() == Status.CONCLUIDO){
+            return false;
+        }
+        if(s == Status.ABERTO){
+            this.status = s;
+            return true;
+        }
+        return false;
+    }
+
     public void cadastrarItemNoPedido(Item i){
         itens.add(i);
     }
-    
+
     public void mostrarItensDoPedido(){
         for(Item i : itens){
             System.out.println(i.getDescricao() + "," + i.getValor() + "," + i.getQuantidade() + "," + i.getValorTotal());

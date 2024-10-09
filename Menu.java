@@ -32,6 +32,7 @@ public class Menu {
         System.out.println("3- Trocar usuário");
         if(usuarioAtual instanceof Administrador){
             System.out.println("4- Analisar estatísticas gerais");
+            System.out.println("5- Visualizar pedidos em aberto");
         }
 
         switch (retornarValorScanner()) {
@@ -42,8 +43,15 @@ public class Menu {
                 deletarPedido();
             } case 3 -> {
                 menuInicial();
+            } case 4 -> {
+
+            } case 5 -> {
+                administrarPedidos();
             }
-            default -> throw new AssertionError();
+            default -> {
+                System.out.println("Opção inválida.");
+                menuPrincipal();
+            }
         }
 
     }
@@ -53,7 +61,7 @@ public class Menu {
         System.out.println("Digite a data atual: ");
         String data = scanner.nextLine();
         Pedido p = new Pedido(usuarioAtual, usuarioAtual.getDepartamento(), data);
-
+        p.setStatus(Status.ABERTO);
         System.out.println("Deseja adicionar 1 item ao pedido? ");
         System.out.println("1- Sim     | 2- Não");
         while(retornarValorScanner() == 1){
@@ -69,6 +77,7 @@ public class Menu {
             p.cadastrarItemNoPedido(item);
 
             System.out.println("Deseja adicionar mais 1 item ao pedido? ");
+            System.out.println("1- Sim     | 2- Não");
             retornarValorScanner();
         }
         catalogo.registrarPedido(p, usuarioAtual);
@@ -101,6 +110,41 @@ public class Menu {
         return resposta;
     }
 
+    public void administrarPedidos(){
+        System.out.println("1- Voltar ao menu");
+        System.out.println("2- Avaliar pedido em aberto");
+        
+        switch (retornarValorScanner()) {
+            case 1 -> {
+                menuPrincipal();
+            } case 2 -> {
+                System.out.println("------------------------");
+                System.out.println("Pedidos em aberto: ");
+                System.out.println("Digite o número do pedido para atualizar o status.");
+                catalogo.imprimePedidosEmAberto();
+                int resposta = retornarValorScanner(); //Vai guardar o pedido escolhido
+                System.out.println("Deseja: \n 1- Aprovar  | 2- Rejeitar");
+                retornarValorScanner();
+                scanner.nextLine();
+                System.out.println("Digite a data:");
+                String data = scanner.nextLine();
+                if(resposta == 1){
+                    catalogo.retornaPedido(resposta).setStatus(usuarioAtual, Status.APROVADO, data);
+                    System.out.println("Status do pedido " + catalogo.retornaPedido(resposta) + " atualizado para " + catalogo.retornaPedido(resposta).getStatus());
+                } else if (resposta == 2){
+                    catalogo.retornaPedido(resposta).setStatus(usuarioAtual, Status.REPROVADO, data);
+                    System.out.println("Status do pedido " + catalogo.retornaPedido(resposta) + " atualizado para " + catalogo.retornaPedido(resposta).getStatus());
+                }
+                administrarPedidos();
+            }
+        
+            default -> {
+                System.out.println("Opção inválida.");
+                menuPrincipal();
+            }
+        }
+    
+    }
 
 
 

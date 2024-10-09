@@ -28,7 +28,7 @@ public class Catalogo{
     }
 
     public boolean deletarPedido(Pedido p, Usuario u){
-        if(u.compare(u, p.getFuncionario()) != 0){
+        if(u.compare(u, p.getFuncionario()) != 0){ //Se o funcionario que está solicitando o pedido não for o mesmo que criou o pedido, irá retornar falso
             return false;
         }
 
@@ -37,11 +37,25 @@ public class Catalogo{
     }
 
     public void imprimePedidos(){
+        //Imprime todos os pedidos
+        //A contagem serve para auxiliar a visualização e escolha do pedido no terminal 
         int contagem = 1;
         for(Pedido p : pedidos){
             System.out.println(contagem + "- " + p.toString());
             contagem++;
         }   
+    }
+
+    public void imprimePedidosEmAberto(){
+        //Imprime todos os pedidos EM ABERTO -> APENAS PARA ADMINISTRADORES
+        //A contagem serve para auxiliar a visualização e escolha do pedido no terminal 
+        int contagem = 1;
+        for(Pedido p : pedidos){
+            if(p.getStatus() == Status.ABERTO){
+                System.out.println(contagem + "- " + p.toString());
+                contagem++;
+            }
+        }
     }
 
     public Pedido retornaPedido(int posicao){
@@ -70,6 +84,8 @@ public class Catalogo{
     }
 
     public void imprimeFuncionarios(){
+        //Imprime todos os usuarios
+        //A contagem serve para auxiliar a visualização e escolha do Usuario no terminal 
         int contagem = 1;
         for(Usuario u : usuarios){
             System.out.println(contagem + "- Nome: " + u.getNome() + " |  ID: " + u.getId());
@@ -78,6 +94,7 @@ public class Catalogo{
     }
 
     public Usuario retornaUsuario(int posicao){
+        //Posição - 1 porque a visualização no terminal começa pelo 1, não pelo 0  
         return usuarios.get(posicao - 1);
     }
 }
