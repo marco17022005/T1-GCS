@@ -53,7 +53,8 @@ public class Administrador extends Usuario{
 
     public void visualizarPedidosEmAberto(List<Pedido> pedidos){
         for (Pedido pedido : pedidos) {
-            if (pedido.getStatus() == Status.ABERTO) {
+            if (pedido.getStatus().equals(Status.ABERTO)) { 
+                //mudanca de == para .equals (comparação de obj)
                 System.out.println(pedido);
             }
         }
