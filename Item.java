@@ -30,7 +30,7 @@ public class Item {
         this.quantidade = quantidade;
     }
 
-    public void setValorTotal(double valorTotal) {
+    public void setValorTotal(double valor, int quantidade) {
         this.valorTotal = valor * quantidade;
     }
 

@@ -36,6 +36,17 @@ public class Catalogo{
         return true;
     }
 
+    public void imprimePedidos(){
+        int contagem = 1;
+        for(Pedido p : pedidos){
+            System.out.println(contagem + "- " + p.toString());
+            contagem++;
+        }   
+    }
+
+    public Pedido retornaPedido(int posicao){
+        return pedidos.get(posicao - 1);
+    }
     
     //Métodos referentes à usuários:
 

@@ -29,18 +29,70 @@ public class Menu {
         System.out.println("Digite a opção desejada: ");
         System.out.println("1- Registrar pedido de aquisição");
         System.out.println("2- Deletar pedido em aberto");
+        System.out.println("3- Trocar usuário");
         if(usuarioAtual instanceof Administrador){
-            System.out.println("3- Analisar estatísticas gerais");
+            System.out.println("4- Analisar estatísticas gerais");
         }
-        System.out.println("4- Trocar usuário");
-        if(retornarValorScanner() == 4){
-            menuInicial();
+
+        switch (retornarValorScanner()) {
+            case 1-> {
+                registrarPedido();
+            } 
+            case 2 -> {
+                deletarPedido();
+            } case 3 -> {
+                menuInicial();
+            }
+            default -> throw new AssertionError();
         }
 
     }
 
+    public void registrarPedido(){
+        Item item = null;
+        System.out.println("Digite a data atual: ");
+        String data = scanner.nextLine();
+        Pedido p = new Pedido(usuarioAtual, usuarioAtual.getDepartamento(), data);
+
+        System.out.println("Deseja adicionar 1 item ao pedido? ");
+        System.out.println("1- Sim     | 2- Não");
+        while(retornarValorScanner() == 1){
+            System.out.println("Digite a descrição do item: ");
+            String descricao = scanner.nextLine();
+            System.out.println("Digite o valor unitário: ");
+            double valorUnitario = scanner.nextDouble();
+            System.out.println("Digite a quantidade desejada: ");
+            int quantidade = scanner.nextInt();
+            scanner.nextLine();
+            item = new Item(descricao, valorUnitario);
+            item.setValorTotal(valorUnitario, quantidade);
+            p.cadastrarItemNoPedido(item);
+
+            System.out.println("Deseja adicionar mais 1 item ao pedido? ");
+            retornarValorScanner();
+        }
+        catalogo.registrarPedido(p, usuarioAtual);
+        menuPrincipal();
+    }   
+
+    public void deletarPedido(){
+        System.out.println("Digite o pedido que deseja deletar: ");
+        mostrarPedidos();
+        if(!catalogo.deletarPedido(catalogo.retornaPedido(retornarValorScanner()), usuarioAtual)){
+            System.out.println("O usuário atual não possui permissão de deletar o pedido informado.\nPermissão delegada ao usuário " + catalogo.retornaPedido(retornarValorScanner()).getFuncionario());
+            menuPrincipal();
+        } else {
+            System.out.println("Pedido deletado.");
+        }
+        menuPrincipal();
+    }
+
     public void mostrarFuncionarios(){
         catalogo.imprimeFuncionarios();
+    }
+
+    public void mostrarPedidos(){
+        catalogo.imprimePedidos();
     }
 
     public int retornarValorScanner(){

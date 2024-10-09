@@ -46,6 +46,10 @@ public class Pedido {
         return true;
     }
 
+    public void cadastrarItemNoPedido(Item i){
+        itens.add(i);
+    }
+    
     public void mostrarItensDoPedido(){
         for(Item i : itens){
             System.out.println(i.getDescricao() + "," + i.getValor() + "," + i.getQuantidade() + "," + i.getValorTotal());
