@@ -13,7 +13,7 @@ public enum Status {
     @Override
     public String toString() {
         String texto = "";
-        texto += "Status: " + status;
+        texto += "" + status;
         return texto;        
     }
 }

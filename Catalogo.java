@@ -41,7 +41,7 @@ public class Catalogo{
         //A contagem serve para auxiliar a visualização e escolha do pedido no terminal 
         int contagem = 1;
         for(Pedido p : pedidos){
-            System.out.println(contagem + "- " + p.toString());
+            System.out.printf("%d- %-20s %5d %5d%n", contagem, p.getFuncionario(), p.getDepartamento(), p.getData());
             contagem++;
         }   
     }
@@ -52,7 +52,7 @@ public class Catalogo{
         int contagem = 1;
         for(Pedido p : pedidos){
             if(p.getStatus() == Status.ABERTO){
-                System.out.println(contagem + "- " + p.toString());
+                System.out.printf("%2d- %s%n", contagem, p.toString());
                 contagem++;
             }
         }
@@ -88,7 +88,7 @@ public class Catalogo{
         //A contagem serve para auxiliar a visualização e escolha do Usuario no terminal 
         int contagem = 1;
         for(Usuario u : usuarios){
-            System.out.println(contagem + "- Nome: " + u.getNome() + " |  ID: " + u.getId());
+            System.out.printf("%2d- Nome: %-20s | ID: %10d%n", contagem, u.getNome(), u.getId());
             contagem++;
         }
     }
