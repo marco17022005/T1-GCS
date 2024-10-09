@@ -25,9 +25,10 @@ public class Menu {
 
     public void menuPrincipal() {
         System.out.println("Usuário atual: " + usuarioAtual.getNome());
-
-        while (true) {
+        boolean continuarNoMenu = true;
+        while (continuarNoMenu == true) {
             System.out.println("Digite a opção desejada: ");
+            System.out.println("0- Sair do sistema");
             System.out.println("1- Registrar pedido de aquisição");
             System.out.println("2- Deletar pedido em aberto");
             System.out.println("3- Trocar usuário");
@@ -38,6 +39,10 @@ public class Menu {
             }
 
             switch (validarOpcaoMenu()) {
+                case 0 -> {
+                    System.out.println("Saindo do sistema...");
+                    continuarNoMenu = false; 
+                }
                 case 1 -> registrarPedido();
                 case 2 -> deletarPedido();
                 case 3 -> menuInicial();

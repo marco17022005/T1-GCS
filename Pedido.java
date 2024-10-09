@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 public class Pedido {
     private Usuario funcionario;
     private Departamento departamento;
@@ -19,6 +20,10 @@ public class Pedido {
 
     public Usuario getFuncionario() {
         return funcionario;
+    }
+
+    public List<Item> getItens() {
+        return itens;
     }
 
     public Departamento getDepartamento() {
