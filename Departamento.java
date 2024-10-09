@@ -21,5 +21,16 @@ public class Departamento {
     public double getValorLimite(){
         return valorLimite;
     }
+
+    public boolean cadastrarFuncionario(Usuario u){
+        for(Usuario usuario : usuarios){
+            if(usuario.getId() == u.getId()){
+                return false;
+            }
+        }
+        
+        usuarios.add(u);
+        return true;
+    }
 }
 

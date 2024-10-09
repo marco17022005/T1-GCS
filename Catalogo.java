@@ -58,5 +58,15 @@ public class Catalogo{
         return null;
     }
 
-    
+    public void imprimeFuncionarios(){
+        int contagem = 1;
+        for(Usuario u : usuarios){
+            System.out.println(contagem + "- Nome: " + u.getNome() + " |  ID: " + u.getId());
+            contagem++;
+        }
+    }
+
+    public Usuario retornaUsuario(int posicao){
+        return usuarios.get(posicao - 1);
+    }
 }

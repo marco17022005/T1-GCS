@@ -50,7 +50,7 @@ public class Usuario implements Comparator{
     
     @Override
     public String toString() {
-        return "Usuário: " + nome + " id (" + id + ")";
+        return nome + " | ID - " + id;
     }
 
     @Override

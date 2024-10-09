@@ -4,8 +4,4 @@ public class Funcionario extends Usuario {
         super(nome, id);
     }
 
-    @Override
-    public String toString() {
-        return "Funcionario: " + getNome();
-    }
 }
