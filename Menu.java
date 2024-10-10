@@ -57,7 +57,10 @@ public class Menu {
         Item item = null;
         System.out.println("Digite a data atual: ");
         String data = scanner.nextLine();
-        Pedido p = new Pedido(usuarioAtual, usuarioAtual.getDepartamento(), data);
+        System.out.println("Digite o ID do pedido: ");
+        int idPedido = scanner.nextInt();
+
+        Pedido p = new Pedido(idPedido,usuarioAtual, usuarioAtual.getDepartamento(), data);
         p.setStatus(Status.ABERTO);
 
         while (true) {
