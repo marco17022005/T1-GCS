@@ -1,5 +1,5 @@
 public enum Status {
-    ABERTO("Aberto"), APROVADO("Aprovado"), REPROVADO("Reprovado"), CONCLUIDO("Concluído");
+    ABERTO("Aberto"), APROVADO("Aprovado"), REPROVADO("Reprovado");
 
     private final String descricao; 
 
