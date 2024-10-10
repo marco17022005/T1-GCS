@@ -45,7 +45,7 @@ public class Pedido {
     }
 
     public boolean setStatus(Usuario administrador, Status s, String data){
-        if(this.getStatus() == Status.APROVADO || this.getStatus() == Status.REPROVADO || this.getStatus() == Status.CONCLUIDO){
+        if(this.getStatus() == Status.APROVADO || this.getStatus() == Status.REPROVADO){
             return false;
         }
         if(administrador instanceof Administrador) {
@@ -58,7 +58,7 @@ public class Pedido {
     }
 
     public boolean setStatus(Status s){
-        if(this.getStatus() == Status.APROVADO || this.getStatus() == Status.REPROVADO || this.getStatus() == Status.CONCLUIDO){
+        if(this.getStatus() == Status.APROVADO || this.getStatus() == Status.REPROVADO){
             return false;
         }
         if(s == Status.ABERTO){
