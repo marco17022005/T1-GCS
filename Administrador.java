@@ -63,7 +63,7 @@ public class Administrador extends Usuario{
     public void manipularStatusPedido(Pedido pedido, Status novoStatus){
         if (pedido.getStatus() == Status.ABERTO) {
             pedido.setStatus(novoStatus);
-            System.out.println("Pedido atualizado para o status: " + novoStatus.getStatus());
+            System.out.println("Pedido atualizado para o status: " + pedido.getStatus());
         } else {
             System.out.println("O pedido já foi concluído e não pode ser alterado.");
         }
