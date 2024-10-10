@@ -1,13 +1,17 @@
-public class Usuario {
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class Usuario implements Comparator{
     private String nome;
-    private String iniciais;
-    private String cargo; // "funcionario" ou "administrador"
+    private int id;
+    private Departamento departamento;
+    private ArrayList<Pedido> pedidos;
 
     // Construtor
-    public Usuario(String nome, String iniciais, String cargo) {
+    public Usuario(String nome, int id) {
         this.nome = nome;
-        this.iniciais = iniciais;
-        this.cargo = cargo;
+        this.id = id;
+        pedidos = new ArrayList<>();
     }
 
     // Getters e Setters
@@ -19,25 +23,47 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public String getIniciais() {
-        return iniciais;
+    public int getId() {
+        return id;
     }
 
-    public void setIniciais(String iniciais) {
-        this.iniciais = iniciais;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getCargo() {
-        return cargo;
+    public ArrayList<Pedido> getPedidos(){
+        return pedidos;
     }
 
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
+    public void cadastrarPedido(Pedido p){
+        pedidos.add(p); //Cadastrar o pedido como feito do usuário
     }
 
-    // Método toString para exibir informações do usuário
+    public void setDepartamento(Departamento d){
+        this.departamento = d;
+        //Um usuário também precisa de departamento, "O departamento solicitante (**deve ser o mesmo do funcionário no momento do cadastro**)"
+    }
+    
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+    
     @Override
     public String toString() {
-        return "Usuário: " + nome + " (" + iniciais + "), Cargo: " + cargo;
+        return nome + " | ID - " + id;
+    }
+
+    @Override
+    public int compare(Object o1, Object o2) {
+        Usuario usuario1, usuario2;
+        
+        usuario1 = (Usuario) o1;
+        usuario2 = (Usuario) o2;
+
+        if (usuario1.getId() < usuario2.getId())
+            return -1;
+        else if(usuario1.getId() > usuario2.getId())
+            return +1;
+        return 0;
     }
 }
