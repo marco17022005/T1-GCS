@@ -12,6 +12,15 @@ public class Catalogo{
 
     //Métodos referentes a pedidos: 
 
+    public boolean existePedido(int idPedido){
+        for(Pedido p : pedidos){
+            if(p.getIdPedido() == idPedido){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean registrarPedido(Pedido p, Usuario u){
         if(p.getDepartamento() != u.getDepartamento()){ //Se o departamento do pedido for diferente do departamento do usuário, retorna falso
             return false;  

@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 public class Pedido {
+    private int idPedido; 
     private Usuario funcionario;
     private Departamento departamento;
     private String data;
@@ -9,13 +10,18 @@ public class Pedido {
     private ArrayList<Item> itens;
     private double valorTotal;
 
-    public Pedido(Usuario funcionario, Departamento departamento, String data){
+    public Pedido(int idPedido,Usuario funcionario, Departamento departamento, String data){
+        this.idPedido = idPedido;
         this.funcionario = funcionario;
         this.departamento = departamento;
         this.data = data;
         status = Status.ABERTO;
         itens = new ArrayList<>();
         setValorTotal();
+    }
+
+    public int getIdPedido(){
+        return idPedido;
     }
 
     public Usuario getFuncionario() {
